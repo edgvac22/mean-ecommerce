@@ -5,13 +5,10 @@
         <div class="cs-carousel-inner" data-carousel-options=''>
 
             <!-- Slide 1 -->
-            <!-- *ngIf="descuento_activo != undefined" style="background-image: url({{url}}obtener_banner_descuento/{{descuento_activo.banner}});"-->
             <div class="bg-size-cover py-xl-6" style="background-image: url(../../assets/img/ecommerce/home/hero-slider/01.jpg);">
                 <div class="container pt-5 pb-6">
                     <div class="row pb-lg-6">
                         <div class="col-lg-6 offset-lg-1 offset-xl-0 pb-4 pb-md-6">
-                            <!-- <h3 class="font-size-lg text-uppercase cs-from-left cs-delay-1">Desde {{descuento_activo.fecha_inicio}} hasta {{descuento_activo.fecha_fin}}</h3> -->
-                            <!-- <h2 class="display-2 mb-lg-5 pb-3 cs-from-left">{{descuento_activo.titulo}}</h2> -->
                             <div class="mb-4 cs-scale-up cs-delay-2">
                                 <a [routerLink]="['/productos']" class="btn btn-outline-primary btn-lg">Ver productos</a>
                             </div>
@@ -148,13 +145,10 @@
                             <h3 class="card-product-title text-truncate mb-2">
                                 <a [routerLink]="['/productos/',item.slug]" class="nav-link">{{item.titulo}}</a>
                             </h3>
-                            <!-- *ngIf="descuento_activo == undefined" -->
                             <div class="d-flex align-items-center" >
                                 <span class="h5 d-inline-block mb-0">${{item.precio}}</span>
                             </div>
-                            <!-- *ngIf="descuento_activo != undefined" -->
                             <div class="d-flex align-items-center" >
-                                <!-- <span class="h5 d-inline-block text-danger mb-0">${{item.precio | descuento:descuento_activo.descuento}}</span> -->
                                 <del class="d-inline-block ml-2 pl-1 text-muted">${{item.precio}}</del>
                             </div>
                         </div>
@@ -207,13 +201,10 @@
                                 <h3 class="card-product-title text-truncate mb-2">
                                     <a href="shop-single.html" class="nav-link">{{item.titulo}}</a>
                                 </h3>
-                                <!-- *ngIf="descuento_activo == undefined" -->
                                 <div class="d-flex align-items-center" >
                                     <span class="h5 d-inline-block mb-0">${{item.precio}}</span>
                                 </div>
-                                <!-- *ngIf="descuento_activo != undefined" -->
                                 <div class="d-flex align-items-center" >
-                                    <!-- <span class="h5 d-inline-block text-danger mb-0">${{item.precio | descuento:descuento_activo.descuento}}</span> -->
                                     <del class="d-inline-block ml-2 pl-1 text-muted">${{item.precio}}</del>
                                 </div>
                             </div>
@@ -256,8 +247,7 @@
                     <img src="../../assets/img/ecommerce/home/mobile-app-illustration.png" class="d-block mx-auto my-4 mb-lg-0 mt-lg-n4" width="498" alt="Illustartion">
                 </div>
                 <div class="col-md-7 col-lg-6 pt-3 pb-5 pt-md-5 pb-md-4 ml-auto">
-                    <h2 class="text-light text-center text-md-left pb-3">¡Disfrute de las compras móviles con nuestra
-                        aplicación Createx Store!</h2>
+                    <h2 class="text-light text-center text-md-left pb-3">¡Disfrute de las compras en línea desde nuestra web!</h2>
                     <div class="d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-md-start">
                         <a href="#" class="btn-market btn-apple mb-3 mx-2 ml-md-0 mr-md-3" role="button">
                             <span class="btn-market-subtitle">Descarga en el</span>
@@ -278,23 +268,23 @@
         <div class="row py-3">
             <div class="col-sm-6 col-md-3 text-center mb-md-0 mb-4 pb-md-0 pb-3">
                 <img class="mb-4" src="../../assets/img/ecommerce/home/services/delivery.svg" width="48" alt="Worldwide Shipping">
-                <h5 class="h5 mb-2">Envío rápido a todo el mundo</h5>
-                <p class="mb-0 text-muted">Get free shipping over $250</p>
+                <h5 class="h5 mb-2">Envío a todo el país</h5>
+                <p class="mb-0 text-muted">Hacemos entregas en todo Panamá</p>
             </div>
             <div class="col-sm-6 col-md-3 text-center mb-md-0 mb-4 pb-md-0 pb-3">
                 <img class="mb-4" src="../../assets/img/ecommerce/home/services/support.svg" width="48" alt="Customer Support">
-                <h5 class="h5 mb-2">Atención al cliente 24/7 días a la semana</h5>
-                <p class="mb-0 text-muted">Friendly 24/7 customer support</p>
+                <h5 class="h5 mb-2">Buena atención al cliente</h5>
+                <p class="mb-0 text-muted">Eres nuestro aliado.</p>
             </div>
             <div class="col-sm-6 col-md-3 text-center mb-md-0 mb-4 pb-md-0 pb-3">
                 <img class="mb-4" src="../../assets/img/ecommerce/home/services/guarantee.svg" width="48" alt="Customer Support">
-                <h5 class="h5 mb-2">Garantía de devolución del dinero</h5>
-                <p class="mb-0 text-muted">We return money within 30 days</p>
+                <h5 class="h5 mb-2">Garantía en productos</h5>
+                <p class="mb-0 text-muted">Buscamos lo mejor para ti.</p>
             </div>
             <div class="col-sm-6 col-md-3 text-center mb-md-0 mb-4 pb-md-0 pb-3">
                 <img class="mb-4" src="../../assets/img/ecommerce/home/services/payment.svg" width="48" alt="Customer Support">
                 <h5 class="h5 mb-2">Pago seguro en línea</h5>
-                <p class="mb-0 text-muted">Accept all major credit cards</p>
+                <p class="mb-0 text-muted">100% de seguridad en nuestra web.</p>
             </div>
         </div>
     </section>
@@ -305,8 +295,8 @@
             <div class="row">
                 <div class="col-md-4 text-center text-md-left pb-2 pb-md-0 mb-4 mb-md-0">
                     <p class="text-dark text-uppercase mb-2">Siguenos en Instagram</p>
-                    <h2 class="h1 pb-2 pb-md-3">@createx_store</h2>
-                    <a href="#" class="btn btn-outline-primary btn-lg">
+                    <h2 class="h1 pb-2 pb-md-3">@ofideusa.utiles</h2>
+                    <a href="https://www.instagram.com/ofideusa.utiles/" class="btn btn-outline-primary btn-lg" target="_blank">
                         <i class="cxi-instagram font-size-lg mr-1"></i> Siguenos en Instagram
                     </a>
                 </div>
@@ -314,11 +304,11 @@
                     <div class="cs-carousel cs-nav-outside">
                         <div class="cs-carousel-inner cs-carousel-inner-six" data-carousel-options='{}'>
                             <!-- Image -->
-                            <div><img src="../../assets/img/ecommerce/home/instagram/01.jpg" alt="Image"></div>
+                            <div><img src="../../assets/img/ecommerce/index/chair.png" alt="Image"></div>
                             <!-- Image -->
-                            <div><img src="../../assets/img/ecommerce/home/instagram/02.jpg" alt="Image"></div>
+                            <div><img src="../../assets/img/ecommerce/index/mic.png" alt="Image"></div>
                             <!-- Image -->
-                            <div><img src="../../assets/img/ecommerce/home/instagram/03.jpg" alt="Image"></div>
+                            <div><img src="../../assets/img/ecommerce/index/printer.png" alt="Image"></div>
                         </div>
                     </div>
                 </div>

@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ClienteService } from 'src/app/services/cliente.service';
-import { GuestService } from 'src/app/services/guest.service';
 import { global } from 'src/app/services/global';
 import { Categoria } from 'src/app/models/config-share';
 import { Carrito, Productos } from 'src/app/models';
-
+import { Product } from '../../../models/products'
 import { io } from "socket.io-client";
 
-declare let noUiSlider:any;
-declare let $:any;
-declare var iziToast:any;
+declare let noUiSlider: any;
+declare let $: any;
+declare var iziToast: any;
 
 @Component({
   selector: 'app-index-producto',
@@ -18,55 +17,60 @@ declare var iziToast:any;
   styles: [
   ]
 })
-export class IndexProductoComponent implements OnInit{
+export class IndexProductoComponent implements OnInit {
 
   public categorias: Categoria[] = [];
   public productos: Productos[] = [];
-  public slug:string = '';
-  public filterCategoria:string = '';
-  public filterProducto:string = '';
-  public filterCatProductos:string = 'todos';
+  products: any;
+  public slug: string = '';
+  public filterCategoria: string = '';
+  public filterProducto: string = '';
+  public filterCatProductos: string = 'todos';
 
   public producto: any = {};
-  public url:any;
+  public url: any;
   public loadData = true;
 
-  public routeCategoria:any;
-  public page:number = 1;
-  public pageSize:number = 15;
+  public routeCategoria: any;
+  public page: number = 1;
+  public pageSize: number = 12;
 
   public sortBy = 'Defecto';
   public carritoData: any = {
     variedad: '',
     cantidad: 1
   };
-  public btnCart:boolean = false;
-  public token:any;
+  public btnCart: boolean = false;
+  public token: any;
   public socket = io('http://localhost:4201');
-  //public descuento_activo : any = undefined;
-  public reviews :Array<any> = [];
+  public reviews: Array<any> = [];
 
-  public count_five_start:number = 0;
-  public count_four_start:number = 0;
-  public count_three_start:number = 0;
-  public count_two_start:number = 0;
-  public count_one_start:number = 0;
+  public count_five_start: number = 0;
+  public count_four_start: number = 0;
+  public count_three_start: number = 0;
+  public count_two_start: number = 0;
+  public count_one_start: number = 0;
 
-  public total_puntos:number = 0;
-  public max_puntos:number = 0;
-  public porcent_raiting:number = 0;
-  public puntosRating:number = 0;
+  public total_puntos: number = 0;
+  public max_puntos: number = 0;
+  public porcent_raiting: number = 0;
+  public puntosRating: number = 0;
 
-  public cinco_porcent:number = 0;
-  public cuatro_porcent:number = 0;
-  public tres_porcent:number = 0;
-  public dos_porcent:number = 0;
-  public uno_porcent:number = 0;
+  public cinco_porcent: number = 0;
+  public cuatro_porcent: number = 0;
+  public tres_porcent: number = 0;
+  public dos_porcent: number = 0;
+  public uno_porcent: number = 0;
+  category?: string;
+  price?: number;
+  inventory?: number;
+  name?: string;
+  image?: string;
+  sku?: string;
 
   constructor(
-    private _clienteService:ClienteService,
+    private _clienteService: ClienteService,
     private _route: ActivatedRoute,
-    private _guestService:GuestService
   ) {
 
     this.token = localStorage.getItem('token');
@@ -80,12 +84,12 @@ export class IndexProductoComponent implements OnInit{
     });
 
     //** Filtrar Productotos por la ruta de Categorías */
-    this._route.params.subscribe( params => {
+    this._route.params.subscribe(params => {
 
       this.slug = params['slug'];
       this.routeCategoria = params['categoria'];
 
-      if(this.routeCategoria){
+      if (this.routeCategoria) {
 
         this._clienteService.listarProductosPublico('').subscribe({
           next: response => {
@@ -98,7 +102,7 @@ export class IndexProductoComponent implements OnInit{
           }
         });
       }
-      else{
+      else {
 
         this._clienteService.listarProductosPublico('').subscribe({
 
@@ -112,9 +116,20 @@ export class IndexProductoComponent implements OnInit{
     });
   }
 
-  ngOnInit(): void {
+  obtainProducts() {
+    this._clienteService.obtainProducts(this.page, this.pageSize).subscribe({
+      next: (response: any) => {
+        if (Array.isArray(response?.data)) {
+          this.products = response.data as Product[];
+          console.log(this.products);
+        }
+      }
+    });
+  }
 
-    let slider:any = <HTMLElement>document.getElementById('slider');
+  ngOnInit(): void {
+    this.obtainProducts()
+    let slider: any = <HTMLElement>document.getElementById('slider');
 
     noUiSlider.create(slider, {
       start: [0, 1000],
@@ -124,16 +139,16 @@ export class IndexProductoComponent implements OnInit{
       pips: { mode: 'count', values: 5, }
     });
 
-    slider.noUiSlider.on('update', function (values:number[]) {
+    slider.noUiSlider.on('update', function (values: number[]) {
 
       $('.cs-range-slider-value-min').val(values[0]);
       $('.cs-range-slider-value-max').val(values[1]);
     });
-    $('.noUi-tooltip').css('font-size','11px');
+    $('.noUi-tooltip').css('font-size', '11px');
 
   }
 
-  buscarProducto(){
+  buscarProducto() {
 
     this._clienteService.listarProductosPublico(this.filterProducto).subscribe(response => {
 
@@ -142,16 +157,16 @@ export class IndexProductoComponent implements OnInit{
     });
   }
 
-  buscarCategorias(){
+  buscarCategorias() {
 
-    if(this.filterCategoria){
+    if (this.filterCategoria) {
 
       var search = new RegExp(this.filterCategoria, 'i');
 
       this.categorias = this.categorias.filter(item => search.test(item.titulo));
-    }else{
+    } else {
 
-      this._clienteService.obtenerConfigPublico().subscribe( response => {
+      this._clienteService.obtenerConfigPublico().subscribe(response => {
 
         this.categorias = response.categorias
       });
@@ -159,9 +174,9 @@ export class IndexProductoComponent implements OnInit{
 
   }
 
-  buscarPrecio(){
+  buscarPrecio() {
 
-    this._clienteService.listarProductosPublico(this.filterProducto).subscribe( response => {
+    this._clienteService.listarProductosPublico(this.filterProducto).subscribe(response => {
 
       this.productos = response;
       let min = parseInt($('.cs-range-slider-value-min').val());
@@ -173,26 +188,26 @@ export class IndexProductoComponent implements OnInit{
     });
   }
 
-  buscarPorCategoria(){
+  buscarPorCategoria() {
 
-    if(this.filterCatProductos == 'todos'){
+    if (this.filterCatProductos == 'todos') {
 
       this._clienteService.listarProductosPublico(this.filterProducto).subscribe(response => {
         this.productos = response;
         this.loadData = false;
       });
-    }else{
+    } else {
 
       this._clienteService.listarProductosPublico(this.filterProducto).subscribe(response => {
 
         this.productos = response;
-        this.productos = this.productos.filter( item => item.categoria == this.filterCatProductos);
+        this.productos = this.productos.filter(item => item.categoria == this.filterCatProductos);
         this.loadData = false;
       });
     }
   }
 
-  resetProductos(){
+  resetProductos() {
 
     this.filterProducto = '';
     this._clienteService.listarProductosPublico('').subscribe(response => {
@@ -203,9 +218,9 @@ export class IndexProductoComponent implements OnInit{
     });
   }
 
-  ordenarPor(){
+  ordenarPor() {
 
-    if(this.sortBy == 'Defecto'){
+    if (this.sortBy == 'Defecto') {
 
       this._clienteService.listarProductosPublico('').subscribe(response => {
 
@@ -213,7 +228,7 @@ export class IndexProductoComponent implements OnInit{
         this.loadData = false;
       });
     }
-    else if(this.sortBy == 'Popularidad'){
+    else if (this.sortBy == 'Popularidad') {
 
       this.productos.sort((a, b) => {
 
@@ -228,7 +243,7 @@ export class IndexProductoComponent implements OnInit{
         return 0;
       });
     }
-    else if(this.sortBy == '+-Precio'){
+    else if (this.sortBy == '+-Precio') {
 
       this.productos.sort(function (a, b) {
 
@@ -242,7 +257,7 @@ export class IndexProductoComponent implements OnInit{
         return 0;
       });
     }
-    else if(this.sortBy == '-+Precio'){
+    else if (this.sortBy == '-+Precio') {
 
       this.productos.sort((a, b) => {
 
@@ -256,7 +271,7 @@ export class IndexProductoComponent implements OnInit{
         return 0;
       });
     }
-    else if(this.sortBy == 'azTitulo'){
+    else if (this.sortBy == 'azTitulo') {
 
       this.productos.sort((a, b) => {
 
@@ -270,7 +285,7 @@ export class IndexProductoComponent implements OnInit{
         return 0;
       });
     }
-    else if(this.sortBy == 'zaTitulo'){
+    else if (this.sortBy == 'zaTitulo') {
 
       this.productos.sort((a, b) => {
 
@@ -286,9 +301,9 @@ export class IndexProductoComponent implements OnInit{
     }
   }
 
-  agregarProducto(producto:Productos){
+  agregarProducto(producto: Productos) {
 
-    let data:Carrito = {
+    let data: Carrito = {
       producto: producto._id,
       cliente: `${localStorage.getItem('_id')}`,
       cantidad: 1,
@@ -297,14 +312,14 @@ export class IndexProductoComponent implements OnInit{
 
     this.btnCart = true;
 
-  //   //devolver la data al backend
+    //   //devolver la data al backend
     this._clienteService.agregarCarritoCliente(data, this.token).subscribe({
 
       next: response => {
 
         console.log('agregado', response);
 
-        if(response == undefined){
+        if (response == undefined) {
           iziToast.show({
             title: 'ERROR',
             titleColor: '#FF0000',
@@ -314,18 +329,18 @@ export class IndexProductoComponent implements OnInit{
           });
           this.btnCart = false;
         }
-         else{
+        else {
 
-          iziToast.show({
-            title: 'CORRECTO',
-            titleColor: '#33FFB2',
-            class: 'text-sucess',
-            position: 'topRight',
-            message: 'Se agrego el producto al carrito.'
-          });
+          // iziToast.show({
+          //   title: 'CORRECTO',
+          //   titleColor: '#33FFB2',
+          //   class: 'text-sucess',
+          //   position: 'topRight',
+          //   message: 'Se agrego el producto al carrito.'
+          // });
 
           //** Socket io, metodo emisor de envio
-          this.socket.emit('add-carrito-add', { data:true });
+          this.socket.emit('add-carrito-add', { data: true });
           this.btnCart = false;
         }
       },

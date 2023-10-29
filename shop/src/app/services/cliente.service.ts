@@ -62,6 +62,11 @@ export class ClienteService {
     return this._http.post(this.url + 'registro-cliente', data, { headers: headers });
   }
 
+  obtainProducts(page: number, limit: number) {
+    let headers = new HttpHeaders().set('Content-Type','application/json');
+    return this._http.get(`http://localhost:3000/api/product?page=${page}&limit=${limit}`, { headers: headers});
+  }
+
   obtenerClienteGuest(id:any, token:any): Observable<any>{
 
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
